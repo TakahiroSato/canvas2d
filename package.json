@@ -4,5 +4,12 @@
   "main": "./canvas2d.js",
   "types": "./canvas2d.d.ts",
   "author": "TakahiroSato",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TakahiroSato/canvas2d.git"
+  },
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
 }
