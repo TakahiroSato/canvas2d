@@ -1,4 +1,13 @@
-export default class canvas2d {
+export class vec2 {
+  public x: number;
+  public y: number;
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+export class canvas2d {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   get width(): number {
@@ -17,16 +26,22 @@ export default class canvas2d {
     }
   }
   private rotate(
-    obj: {
+    degree: number,
+    callback: Function,
+    obj?: {
       x: number;
       y: number;
       w: number;
       h: number;
-      degree: number;
-    },
-    callback: Function
+    }
   ) {
-    const { x, y, w, h, degree } = obj;
+    const { x, y, w, h } = (() => {
+      if (obj !== undefined) {
+        return obj;
+      } else {
+        return { x: 0, y: 0, w: this.width, h: this.height };
+      }
+    })();
     this.ctx.save();
     this.ctx.beginPath();
     this.ctx.translate(x + w / 2, y + h / 2);
@@ -56,26 +71,26 @@ export default class canvas2d {
       this.ctx.fillRect(x, y, w, h);
     } else {
       this.rotate(
+        degree,
+        () => {
+          this.ctx.fillRect(-w / 2, -h / 2, w, h);
+        },
         {
           x: x,
           y: y,
           w: w,
-          h: h,
-          degree: degree
-        },
-        () => {
-          this.ctx.fillRect(-w / 2, -h / 2, w, h);
+          h: h
         }
       );
     }
   }
   public fillCircle(obj: {
-    cx: number,
-    cy: number,
-    r: number,
-    color?: string
+    cx: number;
+    cy: number;
+    r: number;
+    color?: string;
   }) {
-    const {cx, cy, r, color} = obj
+    const { cx, cy, r, color } = obj;
 
     this.ctx.beginPath();
     this.ctx.arc(cx, cy, r, 0, 2 * Math.PI, false);
@@ -83,6 +98,43 @@ export default class canvas2d {
       this.ctx.fillStyle = color;
     }
     this.ctx.fill();
+  }
+  public drawLines(
+    points: vec2[],
+    obj?: {
+      lineWidth?: number;
+      color?: string;
+      degree?: number;
+    }
+  ) {
+    const { lineWidth, color, degree } = (() => {
+      if (obj !== undefined) {
+        return obj;
+      } else {
+        return {};
+      }
+    })();
+    const pos = [...points];
+    if (lineWidth !== undefined) {
+      this.ctx.lineWidth = lineWidth;
+    }
+    if (color !== undefined) {
+      this.ctx.strokeStyle = color;
+    }
+    const _draw = () => {
+      this.ctx.beginPath();
+      this.ctx.moveTo(pos[0].x, pos[0].y);
+      pos.shift();
+      pos.map(p => {
+        this.ctx.lineTo(p.x, p.y);
+      });
+      this.ctx.stroke();
+    };
+    if (degree !== undefined) {
+      this.rotate(degree, _draw);
+    } else {
+      _draw();
+    }
   }
   public drawText(
     text: string,
