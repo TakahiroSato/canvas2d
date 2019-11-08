@@ -1,0 +1,8 @@
+{
+  "name": "canvas2d",
+  "version": "1.0.0",
+  "main": "./canvas2d.js",
+  "types": "./canvas2d.d.ts",
+  "author": "TakahiroSato",
+  "license": "ISC"
+}
