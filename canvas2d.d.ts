@@ -29,6 +29,7 @@ export declare class canvas2d {
         lineWidth?: number;
         color?: string;
         degree?: number;
+        center?: vec2;
     }): void;
     drawText(text: string, x: number, y: number, color?: string, size?: number, font?: string): void;
     clear(): void;

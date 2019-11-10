@@ -105,24 +105,32 @@ export class canvas2d {
       lineWidth?: number;
       color?: string;
       degree?: number;
+      center?: vec2;
     }
   ) {
-    const { lineWidth, color, degree } = (() => {
+    const { lineWidth, color, degree, center } = (() => {
       if (obj !== undefined) {
         return obj;
       } else {
         return {};
       }
     })();
-    const pos = [...points];
+    const _center = new vec2(center?.x ?? 0, center?.y ?? 0);
+    const pos = points.map(p => {
+      if (degree) {
+        return new vec2(-(_center.x-p.x), -(_center.y-p.y));
+      } else {
+        return new vec2(p.x, p.y);
+      }
+    });
     if (lineWidth !== undefined) {
       this.ctx.lineWidth = lineWidth;
     }
-    if (color !== undefined) {
-      this.ctx.strokeStyle = color;
-    }
     const _draw = () => {
       this.ctx.beginPath();
+      if (color !== undefined) {
+        this.ctx.strokeStyle = color;
+      }
       this.ctx.moveTo(pos[0].x, pos[0].y);
       pos.shift();
       pos.map(p => {
@@ -131,7 +139,12 @@ export class canvas2d {
       this.ctx.stroke();
     };
     if (degree !== undefined) {
-      this.rotate(degree, _draw);
+      this.rotate(degree, _draw, {
+        x: _center.x,
+        y: _center.y,
+        w: 0,
+        h: 0,
+      });
     } else {
       _draw();
     }

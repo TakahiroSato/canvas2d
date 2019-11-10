@@ -1,11 +1,4 @@
 "use strict";
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var vec2 = /** @class */ (function () {
     function vec2(x, y) {
@@ -92,23 +85,32 @@ var canvas2d = /** @class */ (function () {
     };
     canvas2d.prototype.drawLines = function (points, obj) {
         var _this = this;
-        var _a = (function () {
+        var _a, _b, _c, _d;
+        var _e = (function () {
             if (obj !== undefined) {
                 return obj;
             }
             else {
                 return {};
             }
-        })(), lineWidth = _a.lineWidth, color = _a.color, degree = _a.degree;
-        var pos = __spreadArrays(points);
+        })(), lineWidth = _e.lineWidth, color = _e.color, degree = _e.degree, center = _e.center;
+        var _center = new vec2((_b = (_a = center) === null || _a === void 0 ? void 0 : _a.x, (_b !== null && _b !== void 0 ? _b : 0)), (_d = (_c = center) === null || _c === void 0 ? void 0 : _c.y, (_d !== null && _d !== void 0 ? _d : 0)));
+        var pos = points.map(function (p) {
+            if (degree) {
+                return new vec2(-(_center.x - p.x), -(_center.y - p.y));
+            }
+            else {
+                return new vec2(p.x, p.y);
+            }
+        });
         if (lineWidth !== undefined) {
             this.ctx.lineWidth = lineWidth;
         }
-        if (color !== undefined) {
-            this.ctx.strokeStyle = color;
-        }
         var _draw = function () {
             _this.ctx.beginPath();
+            if (color !== undefined) {
+                _this.ctx.strokeStyle = color;
+            }
             _this.ctx.moveTo(pos[0].x, pos[0].y);
             pos.shift();
             pos.map(function (p) {
@@ -117,7 +119,12 @@ var canvas2d = /** @class */ (function () {
             _this.ctx.stroke();
         };
         if (degree !== undefined) {
-            this.rotate(degree, _draw);
+            this.rotate(degree, _draw, {
+                x: _center.x,
+                y: _center.y,
+                w: 0,
+                h: 0,
+            });
         }
         else {
             _draw();
