@@ -1,13 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var vec2 = /** @class */ (function () {
-    function vec2(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-    return vec2;
-}());
-exports.vec2 = vec2;
+var vec2_1 = __importDefault(require("./vec2"));
+exports.vec2 = vec2_1.default;
 var canvas2d = /** @class */ (function () {
     function canvas2d(canvasId) {
         this.canvas = document.getElementById(canvasId);
@@ -94,13 +91,13 @@ var canvas2d = /** @class */ (function () {
                 return {};
             }
         })(), lineWidth = _e.lineWidth, color = _e.color, degree = _e.degree, center = _e.center;
-        var _center = new vec2((_b = (_a = center) === null || _a === void 0 ? void 0 : _a.x, (_b !== null && _b !== void 0 ? _b : 0)), (_d = (_c = center) === null || _c === void 0 ? void 0 : _c.y, (_d !== null && _d !== void 0 ? _d : 0)));
+        var _center = new vec2_1.default((_b = (_a = center) === null || _a === void 0 ? void 0 : _a.x, (_b !== null && _b !== void 0 ? _b : 0)), (_d = (_c = center) === null || _c === void 0 ? void 0 : _c.y, (_d !== null && _d !== void 0 ? _d : 0)));
         var pos = points.map(function (p) {
             if (degree) {
-                return new vec2(-(_center.x - p.x), -(_center.y - p.y));
+                return new vec2_1.default(-(_center.x - p.x), -(_center.y - p.y));
             }
             else {
-                return new vec2(p.x, p.y);
+                return new vec2_1.default(p.x, p.y);
             }
         });
         if (lineWidth !== undefined) {

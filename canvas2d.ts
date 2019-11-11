@@ -1,13 +1,5 @@
-export class vec2 {
-  public x: number;
-  public y: number;
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
-}
-
-export class canvas2d {
+import vec2 from "./vec2";
+class canvas2d {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   get width(): number {
@@ -167,3 +159,5 @@ export class canvas2d {
     this.ctx.clearRect(0, 0, this.width, this.height);
   }
 }
+
+export {vec2, canvas2d}

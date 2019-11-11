@@ -1,9 +1,5 @@
-export declare class vec2 {
-    x: number;
-    y: number;
-    constructor(x: number, y: number);
-}
-export declare class canvas2d {
+import vec2 from "./vec2";
+declare class canvas2d {
     private canvas;
     private ctx;
     get width(): number;
@@ -34,3 +30,4 @@ export declare class canvas2d {
     drawText(text: string, x: number, y: number, color?: string, size?: number, font?: string): void;
     clear(): void;
 }
+export { vec2, canvas2d };
