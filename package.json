@@ -1,8 +1,8 @@
 {
   "name": "@takahiro_sato/canvas2d",
   "version": "1.4.0",
-  "main": "./canvas2d.js",
-  "types": "./canvas2d.d.ts",
+  "main": "./dist/canvas2d.js",
+  "types": "./dist/canvas2d.d.ts",
   "author": "TakahiroSato",
   "license": "ISC",
   "repository": {
