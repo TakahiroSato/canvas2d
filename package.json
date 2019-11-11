@@ -1,6 +1,6 @@
 {
   "name": "@takahiro_sato/canvas2d",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": "./dist/canvas2d.js",
   "types": "./dist/canvas2d.d.ts",
   "author": "TakahiroSato",
