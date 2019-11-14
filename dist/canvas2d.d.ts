@@ -8,8 +8,8 @@ declare class canvas2d {
     private rotate;
     fillBackground(color: string): void;
     fillRect(obj: {
-        x: number;
-        y: number;
+        cx: number;
+        cy: number;
         w: number;
         h: number;
         color?: string;

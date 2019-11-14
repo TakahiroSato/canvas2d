@@ -48,19 +48,19 @@ class canvas2d {
     this.ctx.fillRect(0, 0, this.width, this.height);
   }
   public fillRect(obj: {
-    x: number;
-    y: number;
+    cx: number;
+    cy: number;
     w: number;
     h: number;
     color?: string;
     degree?: number;
   }) {
-    const { x, y, w, h, color, degree } = obj;
+    const { cx, cy, w, h, color, degree } = obj;
     if (color) {
       this.ctx.fillStyle = color;
     }
     if (degree === undefined) {
-      this.ctx.fillRect(x, y, w, h);
+      this.ctx.fillRect(cx-w/2, cy-h/2, w, h);
     } else {
       this.rotate(
         degree,
@@ -68,8 +68,8 @@ class canvas2d {
           this.ctx.fillRect(-w / 2, -h / 2, w, h);
         },
         {
-          x: x,
-          y: y,
+          x: cx-w/2,
+          y: cy-h/2,
           w: w,
           h: h
         }

@@ -53,19 +53,19 @@ var canvas2d = /** @class */ (function () {
     };
     canvas2d.prototype.fillRect = function (obj) {
         var _this = this;
-        var x = obj.x, y = obj.y, w = obj.w, h = obj.h, color = obj.color, degree = obj.degree;
+        var cx = obj.cx, cy = obj.cy, w = obj.w, h = obj.h, color = obj.color, degree = obj.degree;
         if (color) {
             this.ctx.fillStyle = color;
         }
         if (degree === undefined) {
-            this.ctx.fillRect(x, y, w, h);
+            this.ctx.fillRect(cx - w / 2, cy - h / 2, w, h);
         }
         else {
             this.rotate(degree, function () {
                 _this.ctx.fillRect(-w / 2, -h / 2, w, h);
             }, {
-                x: x,
-                y: y,
+                x: cx - w / 2,
+                y: cy - h / 2,
                 w: w,
                 h: h
             });
