@@ -15,10 +15,12 @@ var vec2 = /** @class */ (function () {
     vec2.prototype.add = function (x, y) {
         this.x += x;
         this.y += y;
+        return this;
     };
     vec2.prototype.addv = function (v) {
         this.x += v.x;
         this.y += v.y;
+        return this;
     };
     vec2.prototype.rotate = function (degree) {
         var _a;
@@ -27,6 +29,7 @@ var vec2 = /** @class */ (function () {
             this.x * Math.cos(rad) - this.y * Math.sin(rad),
             this.x * Math.sin(rad) + this.y * Math.cos(rad)
         ], this.x = _a[0], this.y = _a[1];
+        return this;
     };
     return vec2;
 }());
