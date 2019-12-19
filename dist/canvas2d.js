@@ -5,15 +5,59 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var vec2_1 = __importDefault(require("./vec2"));
 exports.vec2 = vec2_1.default;
+var c2dImageData = /** @class */ (function () {
+    function c2dImageData(img) {
+        this._imageData = img;
+    }
+    Object.defineProperty(c2dImageData.prototype, "imageData", {
+        get: function () {
+            return this._imageData;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(c2dImageData.prototype, "data", {
+        get: function () {
+            return this._imageData.data;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(c2dImageData.prototype, "width", {
+        get: function () { return this._imageData.width; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(c2dImageData.prototype, "height", {
+        get: function () { return this._imageData.height; },
+        enumerable: true,
+        configurable: true
+    });
+    c2dImageData.prototype.setColor = function (x, y, color) {
+        var r = color.r, g = color.g, b = color.b, a = color.a;
+        var index = y * (this.width * 4) + x * 4;
+        this.data[index] = (r !== null && r !== void 0 ? r : 0);
+        this.data[index + 1] = (g !== null && g !== void 0 ? g : 0);
+        this.data[index + 2] = (b !== null && b !== void 0 ? b : 0);
+        this.data[index + 3] = (a !== null && a !== void 0 ? a : 255);
+    };
+    return c2dImageData;
+}());
+exports.c2dImageData = c2dImageData;
 var canvas2d = /** @class */ (function () {
     function canvas2d(canvasId) {
-        this.canvas = document.getElementById(canvasId);
-        var ctx = this.canvas.getContext("2d");
-        if (ctx !== null) {
-            this.ctx = ctx;
+        try {
+            this.canvas = document.getElementById(canvasId);
+            var ctx = this.canvas.getContext("2d");
+            if (ctx !== null) {
+                this.ctx = ctx;
+            }
+            else {
+                throw new Error("can't get 2d context.");
+            }
         }
-        else {
-            throw new Error("can't get 2d context.");
+        catch (e) {
+            throw e;
         }
     }
     Object.defineProperty(canvas2d.prototype, "width", {
@@ -126,6 +170,21 @@ var canvas2d = /** @class */ (function () {
         else {
             _draw();
         }
+    };
+    canvas2d.prototype.createImageData = function (width, height) {
+        if (width === void 0) { width = this.width; }
+        if (height === void 0) { height = this.height; }
+        return new c2dImageData(this.ctx.createImageData(width, height));
+    };
+    canvas2d.prototype.getImageData = function (width, height) {
+        if (width === void 0) { width = this.width; }
+        if (height === void 0) { height = this.height; }
+        return new c2dImageData(this.ctx.getImageData(0, 0, width, height));
+    };
+    canvas2d.prototype.putImageData = function (img, dx, dy) {
+        if (dx === void 0) { dx = 0; }
+        if (dy === void 0) { dy = 0; }
+        this.ctx.putImageData(img.imageData, dx, dy);
     };
     canvas2d.prototype.drawText = function (text, x, y, color, size, font) {
         if (color === void 0) { color = "#ffffff"; }

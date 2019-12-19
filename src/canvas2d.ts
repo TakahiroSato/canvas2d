@@ -1,4 +1,30 @@
 import vec2 from "./vec2";
+
+class c2dImageData {
+  private _imageData: ImageData;
+  get imageData(): ImageData {
+    return this._imageData;
+  }
+  get data(): Uint8ClampedArray {
+    return this._imageData.data;
+  }
+  get width(): number { return this._imageData.width; }
+  get height(): number { return this._imageData.height; }
+  constructor(img: ImageData) {
+    this._imageData = img;
+  }
+  public setColor(x: number, y: number, color: {
+    r?: number, g?: number, b?: number, a?: number
+  }) {
+    const { r, g, b, a } = color;
+    const index = y * (this.width * 4) + x * 4;
+    this.data[index] = r ?? 0;
+    this.data[index + 1] = g ?? 0;
+    this.data[index + 2] = b ?? 0;
+    this.data[index + 3] = a ?? 255;
+  }
+}
+
 class canvas2d {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
@@ -9,12 +35,16 @@ class canvas2d {
     return this.canvas.clientHeight;
   }
   constructor(canvasId: string) {
-    this.canvas = <HTMLCanvasElement>document.getElementById(canvasId);
-    const ctx = this.canvas.getContext("2d");
-    if (ctx !== null) {
-      this.ctx = ctx;
-    } else {
-      throw new Error("can't get 2d context.");
+    try {
+      this.canvas = <HTMLCanvasElement>document.getElementById(canvasId);
+      const ctx = this.canvas.getContext("2d");
+      if (ctx !== null) {
+        this.ctx = ctx;
+      } else {
+        throw new Error("can't get 2d context.");
+      }
+    } catch (e) {
+      throw e;
     }
   }
   private rotate(
@@ -60,7 +90,7 @@ class canvas2d {
       this.ctx.fillStyle = color;
     }
     if (degree === undefined) {
-      this.ctx.fillRect(cx-w/2, cy-h/2, w, h);
+      this.ctx.fillRect(cx - w / 2, cy - h / 2, w, h);
     } else {
       this.rotate(
         degree,
@@ -68,8 +98,8 @@ class canvas2d {
           this.ctx.fillRect(-w / 2, -h / 2, w, h);
         },
         {
-          x: cx-w/2,
-          y: cy-h/2,
+          x: cx - w / 2,
+          y: cy - h / 2,
           w: w,
           h: h
         }
@@ -110,7 +140,7 @@ class canvas2d {
     const _center = new vec2(center?.x ?? 0, center?.y ?? 0);
     const pos = points.map(p => {
       if (degree) {
-        return new vec2(-(_center.x-p.x), -(_center.y-p.y));
+        return new vec2(-(_center.x - p.x), -(_center.y - p.y));
       } else {
         return new vec2(p.x, p.y);
       }
@@ -141,6 +171,15 @@ class canvas2d {
       _draw();
     }
   }
+  public createImageData(width: number = this.width, height: number = this.height): c2dImageData {
+    return new c2dImageData(this.ctx.createImageData(width, height));
+  }
+  public getImageData(width: number = this.width, height: number = this.height): c2dImageData {
+    return new c2dImageData(this.ctx.getImageData(0, 0, width, height));
+  }
+  public putImageData(img: c2dImageData, dx: number = 0, dy: number = 0) {
+    this.ctx.putImageData(img.imageData, dx, dy);
+  }
   public drawText(
     text: string,
     x: number,
@@ -160,4 +199,4 @@ class canvas2d {
   }
 }
 
-export {vec2, canvas2d}
+export { vec2, canvas2d, c2dImageData }
